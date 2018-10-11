@@ -1,0 +1,141 @@
+openapi: "3.0.1"
+info:
+  title: "Specht2 API"
+  description: "Communicate with Specht2 CLI. One can control and monotor the status of Specht2 CLI with this API. Currently, there is no authentication provided. So this API is intended to be used internally with no public access."
+  version: "0.1"
+  license:
+    name: "Attribution 4.0 International (CC BY 4.0)"
+    url: "https://creativecommons.org/licenses/by/4.0/"
+# paths:
+  # /list:
+  #   get: 
+  # /profile:
+  #   get:
+  #     tags: 
+  #     - Profile
+  #     summary: Get list of profiles
+  #     description: Return the list of all profiles.
+  #     responses:
+  #       "200":
+
+components:
+  schemas:
+    List:
+      title: List
+      description: A list contains rule matching criteria. Either list literal or a url of a list file.
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum: 
+            - url
+            - literal
+        items:
+          type: array
+          items: 
+            type: string
+        url:
+          type: string
+        resolve_status:
+          type: string
+          enum:
+            - success
+            - resolving
+            - failed
+      required: 
+        - id
+        - type
+    ListMap:
+      title: ListMap
+      description: Map of ids and lists.
+      type: object
+      additionalProperties:
+        $ref: "#/components/schemas/List"
+        
+    RemoteHop:
+      title: RemoteHop
+      description: A hop of remote data flow chain.
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+      additionalProperties:
+        type: string
+      required: 
+        - id
+        - type
+    RemoteHopMap:
+      title: RemoteHopMap
+      description: Map of ids and remote hops.
+      type: object
+      additionalProperties:
+        $ref: "#/components/schemas/RemoteHop"
+        
+    LocalHop:
+      title: LocalHop
+      description: A hop of local data flow chain.
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+      additionalProperties:
+        type: string
+      required: 
+        - id
+        - type
+    LocalHopMap:
+      title: LocalHopMap
+      description: Map of ids and local hops.
+      type: object
+      additionalProperties:
+        $ref: "#/components/schemas/LocalHop"
+        
+    Endpoint:
+      title: Endpoint
+      description: A remote server.
+      type: object
+      properties:
+        id:
+          type: string
+        address:
+          type: string
+        port:
+          type: integer
+      required:
+        - id
+        - address
+        - port
+    EndpointMap:
+      title: EndpointMap
+      description: Map of ids and servers.
+      type: object
+      additionalProperties:
+        $ref: "#/components/schemas/Endpoint"
+        
+    Rule:
+      title: Rule
+      description: Rule for matching connections with remote data flow chains.
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        resolve_status:
+          type: string
+          enum:
+            - success
+            - resolving
+            - failed
+      additionalProperties:
+        type: string
+      required: 
+        - id
+        - type
+      
